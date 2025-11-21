@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Overview
 
-## Getting Started
+MVP for a P2P collateral lending platform (auto collateral in Kazakhstan). The stack:
 
-First, run the development server:
+- Next.js (App Router) + TypeScript + Tailwind CSS
+- Supabase (Postgres + Auth) for persistence
+- API routes inside Next.js for backend logic
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Requirements
+
+- Node.js 18+
+- Supabase project
+- OpenAI API key (for upcoming AI risk scoring features)
+
+## Environment Variables
+
+Create a `.env.local` file with:
+
+```
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+SUPABASE_ANON_KEY=your-supabase-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
+OPENAI_API_KEY=sk-...
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`lib/supabase.ts` uses `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` to instantiate a server-side client for protected operations.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Database Schema / Migrations
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Open `db/schema.sql`.
+2. Run the statements in Supabase SQL Editor **or** use the Supabase CLI:
+   ```
+   supabase db push --file db/schema.sql
+   ```
+3. Confirm the tables exist: `users`, `investors`, `borrowers`, `assets`, `cars`, `loans`, `risk_scores`.
 
-## Learn More
+## Development
 
-To learn more about Next.js, take a look at the following resources:
+Install dependencies:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+npm install
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Start the dev server:
 
-## Deploy on Vercel
+```
+npm run dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The app runs at [http://localhost:3000](http://localhost:3000).
